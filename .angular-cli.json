@@ -9,7 +9,9 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        "manifest.json",
+        "firebase-messaging-sw.js"
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -60,9 +62,7 @@
       "spec": false
     },
     "component": {
-      "spec": false,
-      "inlineStyle": true,
-      "inlineTemplate": true
+      "spec": false
     },
     "directive": {
       "spec": false

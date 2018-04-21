@@ -1,31 +1,115 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
+import * as firebase from 'firebase';
+import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+
+import { PushService } from './push.service';
+
 
 @Component({
   selector: 'app-root',
-  template: `
-    <!--The content below is only a placeholder and can be replaced.-->
-    <div style="text-align:center">
-      <h1>
-        Welcome to {{title}}!
-      </h1>
-      <img width="300" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-    </div>
-    <h2>Here are some links to help you start: </h2>
-    <ul>
-      <li>
-        <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-      </li>
-      <li>
-        <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-      </li>
-      <li>
-        <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-      </li>
-    </ul>
-    
-  `,
-  styles: []
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  title = 'app';
+export class AppComponent implements OnInit {
+
+	messaging:any
+	itemsArr;
+	items;
+	token;
+	itemsDisplay;
+	hideToken: boolean = false
+	pushData: any = {
+	'notification': {
+	  "title": "Background Message Title",
+	  "body": "Background Message Body"
+	},
+		"to": ""
+	}
+
+  constructor(private db: AngularFireDatabase, private pushService: PushService) {
+  	this.messaging = firebase.messaging();
+
+  	this.messaging.onTokenRefresh(function () {
+		  this.messaging.getToken()
+		    .then(function (refreshedToken) {
+		      console.log('Token refreshed.');
+		    })
+		    .catch(function (err) {
+		      console.log('Unable to retrieve refreshed token ', err);
+		    });
+		});
+
+		this.itemsArr = []  // Reinitialize the array to prevent data duplication
+		this.items = this.db.list('/items').valueChanges();
+		this.items.subscribe(snapshots => {
+		  snapshots.forEach(snapshot => {
+		    console.log(snapshot.val().tokenID);
+		    this.itemsArr.push(snapshot.val().tokenID);
+		  });
+		});
+  }
+
+  checkToken(token, arr) {
+    let counter: number = 0
+    for (var i = 0; i < arr.length; i++) {
+    if (arr[i] === token) {
+            counter++
+        }
+    }
+    console.log("Counter value", counter)
+    return counter
+	}
+
+	ngOnInit() {
+		const self = this
+		this.items = this.db.list('/items').valueChanges()
+		this.messaging.requestPermission()
+		  .then(function () {
+		    console.log('Notification permission granted.');
+		    self.messaging.getToken()
+		      .then(function (currentToken) {
+		        if (currentToken) {
+		          self.token = currentToken
+		          self.pushData.to = self.token
+		          console.log(self.pushData.to)
+		          // Set a timeout so as to enable all the data to be loaded
+		          setTimeout(() => {
+		            if (self.checkToken(self.token, self.itemsArr) === 0) {
+		              console.log("Push occurrence")
+		              self.items.push({ tokenID: currentToken })
+		            } else {
+		              console.log("User is already subscribed")
+		            }
+		          }, 6500)
+		          // Displays the current token data
+		          console.log("currentToken: ", currentToken);
+		          } else {
+		          // Show permission request.
+		          console.log('No Instance ID token available. Request permission to generate one.');
+		        }
+		      })
+		      .catch(function (err) {
+		        console.log('An error occurred while retrieving token.', err);
+		      });
+		  })
+		  .catch(function (err) {
+		    console.log('Unable to get permission to notify. ', err);
+		})
+
+	  this.messaging.onMessage(function (payload) {
+      console.log("Message received. ", payload);
+    });
+	}
+
+  generatePush() {
+    console.log("Inside push function")
+    console.log(this.pushData.to)
+    if (this.pushData.to === "") {
+      console.log("No token available")
+      return
+    }
+    this.pushService.generatePush(this.pushData)
+      .subscribe(data => { console.log("Succesfully Posted") }, err => console.log(err))
+  }
 }

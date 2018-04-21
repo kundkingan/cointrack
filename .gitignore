@@ -44,4 +44,4 @@ testem.log
 Thumbs.db
 
 # Environment
-/src/environments/**
+/src/environments/firebase.config.ts
