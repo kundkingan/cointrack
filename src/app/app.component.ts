@@ -14,7 +14,7 @@ import { PushService } from './push.service';
 export class AppComponent implements OnInit {
 
 	messaging:any
-	itemsArr;
+	itemsArr = [];
 	items;
 	token;
 	itemsDisplay;
@@ -72,18 +72,6 @@ export class AppComponent implements OnInit {
 		        if (currentToken) {
 		          self.token = currentToken
 		          self.pushData.to = self.token
-		          console.log(self.pushData.to)
-		          // Set a timeout so as to enable all the data to be loaded
-		          setTimeout(() => {
-		            if (self.checkToken(self.token, self.itemsArr) === 0) {
-		              console.log("Push occurrence")
-		              self.items.push({ tokenID: currentToken })
-		            } else {
-		              console.log("User is already subscribed")
-		            }
-		          }, 6500)
-		          // Displays the current token data
-		          console.log("currentToken: ", currentToken);
 		          } else {
 		          // Show permission request.
 		          console.log('No Instance ID token available. Request permission to generate one.');

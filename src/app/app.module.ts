@@ -29,7 +29,7 @@ firebase.initializeApp(firebaseConfig);
     MaterialModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-    ServiceWorkerModule.register('/ngsw-worker.js'),
+    // ServiceWorkerModule.register('./ngsw-worker.js')
   ],
   providers: [PushService],
   bootstrap: [AppComponent]
