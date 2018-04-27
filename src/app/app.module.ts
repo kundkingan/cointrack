@@ -13,8 +13,6 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { AppComponent } from './app.component';
 
-import { PushService } from './push.service';
-
 import * as firebase from 'firebase';
 firebase.initializeApp(firebaseConfig);
 
@@ -30,7 +28,6 @@ firebase.initializeApp(firebaseConfig);
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule
   ],
-  providers: [PushService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

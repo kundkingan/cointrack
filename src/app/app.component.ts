@@ -3,9 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import * as firebase from 'firebase';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 
-import { PushService } from './push.service';
-
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,20 +11,9 @@ import { PushService } from './push.service';
 export class AppComponent implements OnInit {
 
 	messaging:any
-	itemsArr = [];
-	items;
 	token;
-	itemsDisplay;
-	hideToken: boolean = false
-	pushData: any = {
-	'notification': {
-	  "title": "Background Message Title",
-	  "body": "Background Message Body"
-	},
-		"to": ""
-	}
 
-  constructor(private db: AngularFireDatabase, private pushService: PushService) {
+  constructor(private db: AngularFireDatabase) {
   	this.messaging = firebase.messaging();
 
   	this.messaging.onTokenRefresh(function () {
@@ -40,30 +26,10 @@ export class AppComponent implements OnInit {
 		    });
 		});
 
-		this.itemsArr = []  // Reinitialize the array to prevent data duplication
-		this.items = this.db.list('/items').valueChanges();
-		this.items.subscribe(snapshots => {
-		  snapshots.forEach(snapshot => {
-		    console.log(snapshot.val().tokenID);
-		    this.itemsArr.push(snapshot.val().tokenID);
-		  });
-		});
   }
-
-  checkToken(token, arr) {
-    let counter: number = 0
-    for (var i = 0; i < arr.length; i++) {
-    if (arr[i] === token) {
-            counter++
-        }
-    }
-    console.log("Counter value", counter)
-    return counter
-	}
 
 	ngOnInit() {
 		const self = this
-		this.items = this.db.list('/items').valueChanges()
 		this.messaging.requestPermission()
 		  .then(function () {
 		    console.log('Notification permission granted.');
@@ -71,9 +37,7 @@ export class AppComponent implements OnInit {
 		      .then(function (currentToken) {
 		        if (currentToken) {
 		          self.token = currentToken
-		          self.pushData.to = self.token
 		          } else {
-		          // Show permission request.
 		          console.log('No Instance ID token available. Request permission to generate one.');
 		        }
 		      })
@@ -90,14 +54,4 @@ export class AppComponent implements OnInit {
     });
 	}
 
-  generatePush() {
-    console.log("Inside push function")
-    console.log(this.pushData.to)
-    if (this.pushData.to === "") {
-      console.log("No token available")
-      return
-    }
-    this.pushService.generatePush(this.pushData)
-      .subscribe(data => { console.log("Succesfully Posted") }, err => console.log(err))
-  }
 }
