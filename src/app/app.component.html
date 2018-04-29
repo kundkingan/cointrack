@@ -1,7 +1,45 @@
-<h1>Push Notifications using Firebase</h1>
-<br>
-<h2>Current Token:</h2>
-{{token}}
-<br>
-<br>
+<main>
+
+	<mat-card *ngFor="let coin of coins">
+
+		<mat-card-header>
+    	<img mat-card-avatar class="header-image" src="assets/{{coin.symbol}}.png">
+	    <mat-card-title>
+	    	<span>{{coin.name}}</span>
+	  		<span class="price">Price: {{coin.price_usd}}$</span>
+	  	</mat-card-title>
+
+	    <mat-card-subtitle>{{coin.symbol}}</mat-card-subtitle>
+
+	  </mat-card-header>
+
+  	<mat-divider></mat-divider>
+
+	  <mat-card-content>
+
+	  	<div class="header"> Price Change </div>
+
+	  	<div class="top">
+	  		<span>1h</span>
+	  		<span>24h</span>
+	  		<span>7d</span>
+	  	</div>
+
+	  	<div class="bottom">
+	  		<span>{{coin.percent_change_1h}}%</span>
+			  <span>{{coin.percent_change_24h}}%</span>
+			  <span>{{coin.percent_change_7d}}%</span>
+	  	</div>
+
+	  </mat-card-content>
+
+	</mat-card>
+
+<!-- 	<span class="add">
+	  <button mat-fab color="primary" (click)="onAdd()">
+	    <mat-icon>add</mat-icon>
+	  </button>
+	</span> -->
+
+</main>
 
