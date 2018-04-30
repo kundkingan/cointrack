@@ -9,13 +9,11 @@ body, html {
 body {
 	margin: 0;
 	padding: 0;
-	font-family: Roboto,Arial,sans-serif
+	font-family: Roboto,Arial,sans-serif;
+  background: #2d4f77;
 }
 
 .mat-card-header-text {
 	width: 100%;
 }
 
-mat-card {
-	padding: 24px 24px 12px 24px!important;
-}

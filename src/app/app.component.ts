@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-import * as firebase from 'firebase';
 import { AddComponent } from './add/add.component';
 import { ApiService } from './services/api.service';
 import { AfDatabaseService } from './services/af-database.service';
@@ -12,7 +11,7 @@ import { AfMessagingService } from './services/af-messaging.service';
 	templateUrl: './app.component.html',
 	styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
 	coins = []
 	trackedCoins;
@@ -29,13 +28,14 @@ export class AppComponent implements OnInit {
 			this.trackedCoins = trackedCoins
 			this.apiService.getTopCoins().subscribe(coins => this.handleCoins(coins))
 		})
-
 	}
-
-	ngOnInit() { }
 
 	onAdd() {
 		this.dialog.open(AddComponent, {width: '340px'})
+	}
+
+	setPriceColor(percent) {
+		return percent >= 0 ? 'up' : 'down'
 	}
 
 	private handleCoins(coins) {
@@ -46,6 +46,8 @@ export class AppComponent implements OnInit {
 				}
 			})
 		})
+		console.log(this.coins)
 	}
+
 
 }

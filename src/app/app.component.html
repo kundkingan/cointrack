@@ -26,9 +26,15 @@
 	  	</div>
 
 	  	<div class="bottom">
-	  		<span>{{coin.percent_change_1h}}%</span>
-			  <span>{{coin.percent_change_24h}}%</span>
-			  <span>{{coin.percent_change_7d}}%</span>
+	  		<span [ngClass]="setPriceColor(coin.percent_change_1h)">
+	  			{{coin.percent_change_1h}}%
+	  		</span>
+			  <span [ngClass]="setPriceColor(coin.percent_change_24h)">
+			  	{{coin.percent_change_24h}}%
+			  </span>
+			  <span [ngClass]="setPriceColor(coin.percent_change_7d)">
+			  	{{coin.percent_change_7d}}%
+			  </span>
 	  	</div>
 
 	  </mat-card-content>

@@ -6,27 +6,24 @@ main {
 
 mat-card {
 	margin: 28px;
-}
+	padding: 24px 24px 12px 24px;
 
-.price {
-	float: right;
-}
-
-.top, .bottom {
-	display: flex;
-
-	& > * {
-		flex: 1;
-	}
-}
-
-mat-card-content {
-	text-align: center;
-
-	.header {
-		padding: 8px 0 8px 0;
+	mat-card-header {
+		.price { float: right; }
+		.header-image { background-size: cover; }
 	}
 
+	mat-card-content {
+		text-align: center;
+
+		.header { padding: 8px 0 8px 0; }
+		.top, .bottom {
+			display: flex;
+			& > * { flex: 1; }
+		}
+		.up { color: green; }
+		.down { color: red; }
+	}
 }
 
 .add {
@@ -36,14 +33,8 @@ mat-card-content {
   color: white;
 }
 
-.header-image {
-  background-size: cover;
-}
-
 @media all and (max-width: 449px) {
 
-	mat-card {
-		margin: 0 0 28px 0;
-	}
+	mat-card { margin: 0 0 28px 0; }
 
 }
