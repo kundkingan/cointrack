@@ -39,3 +39,11 @@ mat-card-content {
 .header-image {
   background-size: cover;
 }
+
+@media all and (max-width: 449px) {
+
+	mat-card {
+		margin: 0 0 28px 0;
+	}
+
+}

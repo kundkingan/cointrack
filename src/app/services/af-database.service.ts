@@ -9,6 +9,10 @@ export class AfDatabaseService {
 
   constructor(private db: AngularFireDatabase) { }
 
+  getTrackedCoins() {
+  	return this.db.object('trackedCoins').valueChanges();
+  }
+
   getSample() {
   	return this.db.object('sample').valueChanges();
   }

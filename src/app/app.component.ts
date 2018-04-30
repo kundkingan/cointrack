@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import * as firebase from 'firebase';
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { AddComponent } from './add/add.component';
 import { ApiService } from './services/api.service';
+import { AfDatabaseService } from './services/af-database.service';
+import { AfMessagingService } from './services/af-messaging.service';
 
 @Component({
 	selector: 'app-root',
@@ -13,75 +14,33 @@ import { ApiService } from './services/api.service';
 })
 export class AppComponent implements OnInit {
 
-	messaging: any
-	token
 	coins = []
-	trackedCoins = ['BTC', 'XLM', 'XRP', 'ETH']
+	trackedCoins;
 
 	constructor(
-		private db: AngularFireDatabase,
 		private apiService: ApiService,
+		private dbService: AfDatabaseService,
+		private msgService: AfMessagingService,
 		public dialog: MatDialog)
 	{
-		this.setupMessaging();
-		this.apiService.getTopCoins().subscribe(data => this.handleCoins(data))
+		this.msgService.setupMessaging();
+		this.msgService.setupNotification()
+		this.dbService.getTrackedCoins().subscribe(trackedCoins => {
+			this.trackedCoins = trackedCoins
+			this.apiService.getTopCoins().subscribe(coins => this.handleCoins(coins))
+		})
+
 	}
 
-	ngOnInit() {
-		this.setupNotification()
-	}
+	ngOnInit() { }
 
 	onAdd() {
-		this.dialog.open(AddComponent, {
-			width: '340px'
-		})
+		this.dialog.open(AddComponent, {width: '340px'})
 	}
 
-	private setupMessaging() {
-		this.messaging = firebase.messaging();
-
-		this.messaging.onTokenRefresh(function () {
-			this.messaging.getToken()
-			.then(function (refreshedToken) {
-				console.log('Token refreshed.');
-			})
-			.catch(function (err) {
-				console.log('Unable to retrieve refreshed token ', err);
-			});
-		});
-	}
-
-	private setupNotification() {
-		const self = this
-		this.messaging.requestPermission()
-		.then(function () {
-			console.log('Notification permission granted.');
-			self.messaging.getToken()
-			.then(function (currentToken) {
-				if (currentToken) {
-					console.log(currentToken)
-					self.token = currentToken
-				} else {
-					console.log('No Instance ID token available. Request permission to generate one.');
-				}
-			})
-			.catch(function (err) {
-				console.log('An error occurred while retrieving token.', err);
-			});
-		})
-		.catch(function (err) {
-			console.log('Unable to get permission to notify. ', err);
-		})
-
-		this.messaging.onMessage(function (payload) {
-			console.log("Message received. ", payload);
-		});
-	}
-
-	private handleCoins(data) {
-
+	private handleCoins(coins) {
 		this.trackedCoins.forEach(t => {
-			data.forEach(coin => {
+			coins.forEach(coin => {
 				if (t === coin.symbol) {
 					this.coins.push(coin)
 				}

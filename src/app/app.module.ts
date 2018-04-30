@@ -17,6 +17,7 @@ import { AppComponent } from './app.component';
 import { AddComponent } from './add/add.component';
 
 import { AfDatabaseService } from './services/af-database.service';
+import { AfMessagingService } from './services/af-messaging.service';
 import { ApiService } from './services/api.service';
 
 import * as firebase from 'firebase';
@@ -38,7 +39,7 @@ firebase.initializeApp(firebaseConfig);
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule
   ],
-  providers: [AfDatabaseService, ApiService],
+  providers: [AfDatabaseService, ApiService, AfMessagingService],
   bootstrap: [AppComponent],
   entryComponents: [AddComponent]
 })
