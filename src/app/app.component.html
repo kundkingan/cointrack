@@ -6,7 +6,7 @@
     	<img mat-card-avatar class="header-image" src="assets/{{coin.symbol}}.png">
 	    <mat-card-title>
 	    	<span>{{coin.name}}</span>
-	  		<span class="price">Price: {{coin.price_usd}}$</span>
+	  		<span class="price">Price: {{coin.quotes.USD.price}}$</span>
 	  	</mat-card-title>
 
 	    <mat-card-subtitle>{{coin.symbol}}</mat-card-subtitle>
@@ -26,14 +26,14 @@
 	  	</div>
 
 	  	<div class="bottom">
-	  		<span [ngClass]="setPriceColor(coin.percent_change_1h)">
-	  			{{coin.percent_change_1h}}%
+	  		<span [ngClass]="setPriceColor(coin.quotes.USD.percent_change_1h)">
+	  			{{coin.quotes.USD.percent_change_1h}}%
 	  		</span>
-			  <span [ngClass]="setPriceColor(coin.percent_change_24h)">
-			  	{{coin.percent_change_24h}}%
+			  <span [ngClass]="setPriceColor(coin.quotes.USD.percent_change_24h)">
+			  	{{coin.quotes.USD.percent_change_24h}}%
 			  </span>
-			  <span [ngClass]="setPriceColor(coin.percent_change_7d)">
-			  	{{coin.percent_change_7d}}%
+			  <span [ngClass]="setPriceColor(coin.quotes.USD.percent_change_7d)">
+			  	{{coin.quotes.USD.percent_change_7d}}%
 			  </span>
 	  	</div>
 
@@ -41,11 +41,11 @@
 
 	</mat-card>
 
-<!-- 	<span class="add">
-	  <button mat-fab color="primary" (click)="onAdd()">
+	<span class="add">
+	  <button mat-fab color="primary" (click)="onLogin()">
 	    <mat-icon>add</mat-icon>
 	  </button>
-	</span> -->
+	</span>
 
 </main>
 

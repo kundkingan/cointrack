@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { AddComponent } from './add/add.component';
+import { LoginComponent } from './login/login.component';
 import { ApiService } from './services/api.service';
 import { AfDatabaseService } from './services/af-database.service';
 import { AfMessagingService } from './services/af-messaging.service';
@@ -26,12 +27,16 @@ export class AppComponent {
 		this.msgService.setupNotification()
 		this.dbService.getTrackedCoins().subscribe(trackedCoins => {
 			this.trackedCoins = trackedCoins
-			this.apiService.getTopCoins().subscribe(coins => this.handleCoins(coins))
+			this.apiService.getTopCoins().subscribe(coins => this.handleCoins(coins['data']))
 		})
 	}
 
 	onAdd() {
 		this.dialog.open(AddComponent, {width: '340px'})
+	}
+
+	onLogin() {
+		this.dialog.open(LoginComponent, {width: '340px'})
 	}
 
 	setPriceColor(percent) {
@@ -40,9 +45,9 @@ export class AppComponent {
 
 	private handleCoins(coins) {
 		this.trackedCoins.forEach(t => {
-			coins.forEach(coin => {
-				if (t === coin.symbol) {
-					this.coins.push(coin)
+			Object.keys(coins).forEach(coin => {
+				if (coins[coin]['symbol'] === t) {
+					this.coins.push(coins[coin])
 				}
 			})
 		})

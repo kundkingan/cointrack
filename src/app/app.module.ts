@@ -13,12 +13,14 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
-import { AppComponent } from './app.component';
-import { AddComponent } from './add/add.component';
-
 import { AfDatabaseService } from './services/af-database.service';
 import { AfMessagingService } from './services/af-messaging.service';
+import { AfAuthService } from './services/af-auth.service';
 import { ApiService } from './services/api.service';
+
+import { AppComponent } from './app.component';
+import { AddComponent } from './add/add.component';
+import { LoginComponent } from './login/login.component';
 
 import * as firebase from 'firebase';
 firebase.initializeApp(firebaseConfig);
@@ -26,7 +28,8 @@ firebase.initializeApp(firebaseConfig);
 @NgModule({
   declarations: [
     AppComponent,
-    AddComponent
+    AddComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -37,10 +40,11 @@ firebase.initializeApp(firebaseConfig);
     FormsModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
-  providers: [AfDatabaseService, ApiService, AfMessagingService],
+  providers: [AfDatabaseService, ApiService, AfMessagingService, AfAuthService],
   bootstrap: [AppComponent],
-  entryComponents: [AddComponent]
+  entryComponents: [AddComponent, LoginComponent]
 })
 export class AppModule { }

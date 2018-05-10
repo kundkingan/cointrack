@@ -10,7 +10,7 @@ export class ApiService {
 
 	// url = this.COIN_URL + 'pricemulti?fsyms=' + this.COINS + '&tsyms=' + this.CURRENCY
 
-	coinMarket = 'https://api.coinmarketcap.com/v1/ticker/?start=0&limit=10';
+	coinMarket = 'https://api.coinmarketcap.com/v2/ticker/?start=0&limit=10';
 
   constructor(private http: HttpClient) { }
 
