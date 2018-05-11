@@ -38,7 +38,6 @@ export class AppComponent {
 		this.afAuthService.getAuthState$.subscribe(res => this.handleAuthState(res))
 		this.afDbService.getAvailableCoins().subscribe(res => this.availableCoins = res)
 		this.componentService.getLoadingStatus$.subscribe(status => this.loading = status)
-
 	}
 
 	onAdd() {
@@ -64,9 +63,6 @@ export class AppComponent {
 	}
 
 	onLogin() {
-		// this.dialog.open(LoginComponent, { width: '340px' })
-		// .afterClosed().subscribe(res => console.log(res))
-		//
 		this.afAuthService.login();
 	}
 
@@ -78,6 +74,7 @@ export class AppComponent {
 	handleAuthState(user) {
 		this.showContent = true
 		if (user !== null) {
+			this.signedIn = true
 			this.uid = user.uid
 			this.afDbService.getUser(user.uid).subscribe(res => {
 				this.user = res
