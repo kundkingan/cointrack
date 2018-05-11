@@ -41,25 +41,27 @@ export class AppComponent {
 	}
 
 	onAdd() {
-		this.dialog.open(AddComponent, {
-			width: '340px',
-			data: {
-				userCoins: this.user !== null ? this.user.coins : null,
-				availableCoins: this.availableCoins
-			}
-		}).afterClosed().subscribe(res => {
-			let obj = {}
-
-			if (res !== null) {
-				for(let i = 0; i < res.length; i++) {
-					obj[i] = res[i].name
+		if (this.signedIn) {
+			this.dialog.open(AddComponent, {
+				width: '340px',
+				data: {
+					userCoins: this.user !== null ? this.user.coins : null,
+					availableCoins: this.availableCoins
 				}
-			} else {
-				obj = null
-			}
+			}).afterClosed().subscribe(res => {
+				let obj = {}
 
-			this.afDbService.setUserCoins(obj, this.uid)
-		})
+				if (res !== null) {
+					for(let i = 0; i < res.length; i++) {
+						obj[i] = res[i].name
+					}
+				} else {
+					obj = null
+				}
+
+				this.afDbService.setUserCoins(obj, this.uid)
+			})
+		}
 	}
 
 	onLogin() {
