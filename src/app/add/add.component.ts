@@ -6,6 +6,7 @@ import {SelectionModel} from '@angular/cdk/collections'
 import { AfDatabaseService } from '../services/af-database.service'
 
 export interface Element {
+  select: boolean,
   name: string
 }
 
@@ -17,7 +18,7 @@ export interface Element {
 export class AddComponent {
 
   initialSelection = []
-  displayedColumns = ['select', 'name']
+  displayedColumns = ['name', 'select']
   dataSource
   selection
   set = false
@@ -27,7 +28,6 @@ export class AddComponent {
     public dialogRef: MatDialogRef<AddComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
-    console.log(data)
     this.initTable(data)
   }
 
@@ -51,11 +51,17 @@ export class AddComponent {
 
   private initTable(data) {
     let element_data: Element[] = []
-    data.availableCoins.forEach(coin => element_data.push({name: coin}))
+    data.availableCoins.forEach(coin => element_data.push({
+      select: false,
+      name: coin
+    }))
 
-    this.initialSelection = data.userCoins.map(coin => {
-      return element_data[data.availableCoins.indexOf(coin)]
-    })
+    if (data.userCoins !== null) {
+      this.initialSelection = data.userCoins.map(coin => {
+        return element_data[data.availableCoins.indexOf(coin)]
+      })
+    }
+
 
     this.dataSource = new MatTableDataSource<Element>(element_data)
     this.selection = new SelectionModel<Element>(true, this.initialSelection)

@@ -27,13 +27,15 @@ import { AppComponent } from './app.component';
 import { AddComponent } from './add/add.component';
 import { LoginComponent } from './login/login.component';
 import { MainComponent } from './main/main.component';
+import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddComponent,
     LoginComponent,
-    MainComponent
+    MainComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,
@@ -49,6 +51,6 @@ import { MainComponent } from './main/main.component';
   ],
   providers: [AfDatabaseService, ApiService, AfMessagingService, AfAuthService, ComponentService],
   bootstrap: [AppComponent],
-  entryComponents: [AddComponent, LoginComponent]
+  entryComponents: [AddComponent, LoginComponent, NotificationComponent]
 })
 export class AppModule { }

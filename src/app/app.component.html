@@ -1,17 +1,44 @@
-<button mat-fab color="primary" (click)="onAdd()">Add</button>
+<main *ngIf="showContent">
 
+	<div class="sign-in" *ngIf="!signedIn">
+		<div class="header">
+			<span>Sign in to access personal notifications on specific coins</span>
+		</div>
+		<div class="action">
+			<button mat-raised-button (click)="onLogin()">SIGN IN WITH GOOGLE</button>
+		</div>
+	</div>
 
-<app-main></app-main>
+	<app-main></app-main>
 
+</main>
 
-<span class="add">
-  <button mat-fab color="primary" (click)="onLogin()">
-    <mat-icon>add</mat-icon>
-  </button>
-</span>
+<div class="loading" *ngIf="loading">
+	<mat-spinner diameter="45"></mat-spinner>
+</div>
 
-<!-- <span class="add">
-  <button mat-fab color="primary" (click)="onLogin()">
-    <mat-icon>add</mat-icon>
-  </button>
-</span> -->
+<div class="bottom">
+	<div class="b-actions">
+		<div class="a-action" (click)="onNotifications()">
+			<div class="a-notifications">
+				<div class="b-top">
+					<mat-icon>notifications</mat-icon>
+				</div>
+				<div class="b-bottom">
+					<span>NOTIFICATIONS</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="a-action" (click)="onAdd()">
+			<div class="a-add">
+				<div class="b-top">
+					<mat-icon>add</mat-icon>
+				</div>
+				<div class="b-bottom">
+					<span>ADD COINS</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

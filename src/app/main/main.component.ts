@@ -25,13 +25,13 @@ export class MainComponent {
 	{
 
 		this.componentService.getUser$.subscribe(user => {
-			console.log(user)
-			this.userCoins = user.coins
-			this.apiService.getTopCoins().subscribe(coins => this.handleCoins(coins['data']))
-		})
-
-		this.componentService.getAvailableCoins$.subscribe(coins => {
-			console.log(coins)
+			if (user !== null ) {
+				this.userCoins = user['coins']
+				this.apiService.getTopCoins().subscribe(coins => this.handleCoins(coins['data']))
+			} else {
+				this.coins = []
+				this.componentService.sendLoadingStatus(false)
+			}
 		})
 
 	}
@@ -42,6 +42,7 @@ export class MainComponent {
 
 	private handleCoins(coins) {
 		this.coins = []
+		this.componentService.sendLoadingStatus(false)
 		this.userCoins.forEach(t => {
 			Object.keys(coins).forEach(coin => {
 				if (coins[coin]['symbol'] === t) {

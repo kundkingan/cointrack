@@ -1,7 +1,7 @@
-main {
+.content {
+  margin: 0 auto;
 	max-width: 400px;
-	margin: 0 auto;
-  padding: 18px;
+  padding-bottom: 70px;
 }
 
 mat-card {
@@ -26,9 +26,13 @@ mat-card {
 	}
 }
 
+.loading {
+	position: fixed;
+	top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 @media all and (max-width: 449px) {
-
 	mat-card { margin: 0 0 28px 0; }
-
 }

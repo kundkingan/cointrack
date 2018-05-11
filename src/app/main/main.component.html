@@ -1,9 +1,9 @@
-<main>
+<div class="content">
 
 	<mat-card *ngFor="let coin of coins">
 
 		<mat-card-header>
-    	<img mat-card-avatar class="header-image" src="assets/{{coin.symbol}}.png">
+	  	<img mat-card-avatar class="header-image" src="assets/{{coin.symbol}}.png">
 	    <mat-card-title>
 	    	<span>{{coin.name}}</span>
 	  		<span class="price">Price: {{coin.quotes.USD.price}}$</span>
@@ -13,7 +13,7 @@
 
 	  </mat-card-header>
 
-  	<mat-divider></mat-divider>
+		<mat-divider></mat-divider>
 
 	  <mat-card-content>
 
@@ -41,6 +41,5 @@
 
 	</mat-card>
 
-
-</main>
+</div>
 

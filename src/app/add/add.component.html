@@ -1,7 +1,4 @@
-
-
-
-<h2 mat-dialog-title>Track coins</h2>
+<h2 mat-dialog-title>Select coins to track</h2>
 <mat-dialog-content>
 	<div class="example-container" *ngIf="set">
 
@@ -13,9 +10,15 @@
 
 		<mat-table #table [dataSource]="dataSource">
 
+			<!-- Name Column -->
+			<ng-container matColumnDef="name">
+				<mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+				<mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+			</ng-container>
+
 			<!-- Checkbox Column -->
 			<ng-container matColumnDef="select">
-				<mat-header-cell *matHeaderCellDef>
+				<mat-header-cell *matHeaderCellDef class="align-right">
 					<mat-checkbox
 					color="primary"
 					(change)="$event ? masterToggle() : null"
@@ -23,26 +26,21 @@
 					[indeterminate]="selection.hasValue() && !isAllSelected()">
 				</mat-checkbox>
 				</mat-header-cell>
-				<mat-cell *matCellDef="let row">
+				<mat-cell *matCellDef="let row" class="align-right">
 					<mat-checkbox
 					color="primary"
 					(click)="$event.stopPropagation()"
 					(change)="$event ? selection.toggle(row) : null"
 					[checked]="selection.isSelected(row)">
-				</mat-checkbox>
-			</mat-cell>
-			</ng-container>
-
-			<!-- Name Column -->
-			<ng-container matColumnDef="name">
-				<mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-				<mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+					</mat-checkbox>
+				</mat-cell>
 			</ng-container>
 
 			<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 			<mat-row *matRowDef="let row; columns: displayedColumns;"
 			(click)="selection.toggle(row)">
 			</mat-row>
+
 		</mat-table>
 	</div>
 </mat-dialog-content>
