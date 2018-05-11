@@ -11,7 +11,6 @@ export class AfAuthService {
 	private authStateSource = new Subject<any>();
 
 	getAuthState$ = this.authStateSource.asObservable();
-	userId;
 
 	constructor(public afAuth: AngularFireAuth) {
 		this.afAuth.authState.subscribe(user => this.handleAuthState(user))

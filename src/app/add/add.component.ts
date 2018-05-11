@@ -1,12 +1,12 @@
-import { Component, Inject  } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import {MatTableDataSource} from '@angular/material';
-import {SelectionModel} from '@angular/cdk/collections';
+import { Component, Inject  } from '@angular/core'
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
+import {MatTableDataSource} from '@angular/material'
+import {SelectionModel} from '@angular/cdk/collections'
 
-import { AfDatabaseService } from '../services/af-database.service';
+import { AfDatabaseService } from '../services/af-database.service'
 
 export interface Element {
-  name: string;
+  name: string
 }
 
 @Component({
@@ -17,45 +17,49 @@ export interface Element {
 export class AddComponent {
 
   initialSelection = []
-  displayedColumns = ['select', 'name'];
-  dataSource;
-  selection;
-  set = false;
+  displayedColumns = ['select', 'name']
+  dataSource
+  selection
+  set = false
 
   constructor(
     private dbService: AfDatabaseService,
     public dialogRef: MatDialogRef<AddComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any)
   {
-    this.dbService.getSample().subscribe(data => this.initTable(data))
+    console.log(data)
+    this.initTable(data)
   }
 
   isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
+    const numSelected = this.selection.selected.length
+    const numRows = this.dataSource.data.length
+    return numSelected === numRows
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected() ?
         this.selection.clear() :
-        this.dataSource.data.forEach(row => this.selection.select(row));
+        this.dataSource.data.forEach(row => this.selection.select(row))
   }
 
   applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
+    filterValue = filterValue.trim()
+    filterValue = filterValue.toLowerCase()
+    this.dataSource.filter = filterValue
   }
 
   private initTable(data) {
-    let element_data: Element[] = [];
-    data.forEach(coin => element_data.push({name: coin}))
+    let element_data: Element[] = []
+    data.availableCoins.forEach(coin => element_data.push({name: coin}))
 
-    this.dataSource = new MatTableDataSource<Element>(element_data);
-    this.selection = new SelectionModel<Element>(true, this.initialSelection);
-    this.set = true;
+    this.initialSelection = data.userCoins.map(coin => {
+      return element_data[data.availableCoins.indexOf(coin)]
+    })
+
+    this.dataSource = new MatTableDataSource<Element>(element_data)
+    this.selection = new SelectionModel<Element>(true, this.initialSelection)
+    this.set = true
   }
 
 }

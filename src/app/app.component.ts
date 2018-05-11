@@ -6,6 +6,8 @@ import { LoginComponent } from './login/login.component';
 import { ApiService } from './services/api.service';
 import { AfDatabaseService } from './services/af-database.service';
 import { AfMessagingService } from './services/af-messaging.service';
+import { AfAuthService } from './services/af-auth.service';
+import { ComponentService } from './services/component.service';
 
 @Component({
 	selector: 'app-root',
@@ -14,45 +16,67 @@ import { AfMessagingService } from './services/af-messaging.service';
 })
 export class AppComponent {
 
-	coins = []
-	trackedCoins;
+	uid
+	availableCoins
+	user
 
 	constructor(
+		private componentService: ComponentService,
 		private apiService: ApiService,
 		private dbService: AfDatabaseService,
 		private msgService: AfMessagingService,
+		private authService: AfAuthService,
 		public dialog: MatDialog)
 	{
-		this.msgService.setupMessaging();
-		this.msgService.setupNotification()
-		this.dbService.getTrackedCoins().subscribe(trackedCoins => {
-			this.trackedCoins = trackedCoins
-			this.apiService.getTopCoins().subscribe(coins => this.handleCoins(coins['data']))
+		// this.msgService.setupMessaging();
+		// this.msgService.setupNotification()
+		this.authService.getAuthState$.subscribe(res => this.handleAuthState(res))
+		this.dbService.getAvailableCoins().subscribe(res => {
+			this.availableCoins = res
+			this.componentService.sendAvailableCoins(res)
 		})
+
 	}
 
 	onAdd() {
-		this.dialog.open(AddComponent, {width: '340px'})
+		let dialogRef = this.dialog.open(AddComponent, {
+			width: '340px',
+			data: {
+				userCoins: this.user.coins,
+				availableCoins: this.availableCoins
+			}
+		})
+
+		dialogRef.afterClosed().subscribe(res => {
+			let obj = {}
+			for(let i = 0; i < res.length; i++) {
+				obj[i] = res[i].name
+			}
+			this.dbService.setUserCoins(obj, this.uid)
+		})
 	}
 
 	onLogin() {
-		this.dialog.open(LoginComponent, {width: '340px'})
-	}
-
-	setPriceColor(percent) {
-		return percent >= 0 ? 'up' : 'down'
-	}
-
-	private handleCoins(coins) {
-		this.trackedCoins.forEach(t => {
-			Object.keys(coins).forEach(coin => {
-				if (coins[coin]['symbol'] === t) {
-					this.coins.push(coins[coin])
-				}
-			})
+		let dialogRef = this.dialog.open(LoginComponent, {width: '340px'})
+		dialogRef.afterClosed().subscribe(res => {
+			console.log(res)
 		})
-		console.log(this.coins)
 	}
 
+
+	handleAuthState(user) {
+		if (user !== null) {
+			this.uid = user.uid
+			this.dbService.getUser(user.uid).subscribe(res => {
+				this.user = res
+				this.componentService.sendUser(res)
+			})
+		} else {
+			this.dbService.getSample().subscribe(res => {
+				this.user = res
+				this.componentService.sendUser(res)
+			})
+		}
+	}
 
 }

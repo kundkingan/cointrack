@@ -1,0 +1,34 @@
+main {
+	max-width: 400px;
+	margin: 0 auto;
+  padding: 18px;
+}
+
+mat-card {
+	margin: 28px;
+	padding: 24px 24px 12px 24px;
+
+	mat-card-header {
+		.price { float: right; }
+		.header-image { background-size: cover; }
+	}
+
+	mat-card-content {
+		text-align: center;
+
+		.header { padding: 8px 0 8px 0; }
+		.top, .bottom {
+			display: flex;
+			& > * { flex: 1; }
+		}
+		.up { color: green; }
+		.down { color: red; }
+	}
+}
+
+
+@media all and (max-width: 449px) {
+
+	mat-card { margin: 0 0 28px 0; }
+
+}

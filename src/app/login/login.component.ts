@@ -16,7 +16,7 @@ export class LoginComponent {
 		@Inject(MAT_DIALOG_DATA) public data: any)
 	{
 		this.afAuthService.getAuthState$.subscribe(user => {
-			if (user) this.dialogRef.close();
+			if (user) this.dialogRef.close(true);
 		});
 	}
 
