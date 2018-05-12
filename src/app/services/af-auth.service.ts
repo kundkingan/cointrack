@@ -8,20 +8,15 @@ import { Subject }    from 'rxjs/Subject';
 @Injectable()
 export class AfAuthService {
 
-	private authStateSource = new Subject<any>();
-
-	getAuthState$ = this.authStateSource.asObservable();
-
-	constructor(public afAuth: AngularFireAuth) {
-		this.afAuth.authState.subscribe(user => this.handleAuthState(user))
-	}
+	constructor(private afAuth: AngularFireAuth) {}
 
 	login() {
 		this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
 	}
 
-	private handleAuthState(user) {
-		this.authStateSource.next(user);
+	getAuthState() {
+		return this.afAuth.authState
 	}
+
 
 }

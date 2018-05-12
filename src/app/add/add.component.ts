@@ -56,8 +56,8 @@ export class AddComponent {
       name: coin
     }))
 
-    if (data.userCoins) {
-      this.initialSelection = data.userCoins.map(coin => {
+    if (data.selectedCoins) {
+      this.initialSelection = data.selectedCoins.map(coin => {
         return element_data[data.availableCoins.indexOf(coin)]
       })
     }

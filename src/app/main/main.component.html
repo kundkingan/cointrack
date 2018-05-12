@@ -1,5 +1,9 @@
 <div class="content">
 
+	<div class="empty" *ngIf="showText">
+		<span> No coins specified yet :( </span>
+	</div>
+
 	<mat-card *ngFor="let coin of coins">
 
 		<mat-card-header>

@@ -25,7 +25,6 @@ import { ComponentService } from './services/component.service';
 
 import { AppComponent } from './app.component';
 import { AddComponent } from './add/add.component';
-import { LoginComponent } from './login/login.component';
 import { MainComponent } from './main/main.component';
 import { NotificationComponent } from './notification/notification.component';
 
@@ -33,7 +32,6 @@ import { NotificationComponent } from './notification/notification.component';
   declarations: [
     AppComponent,
     AddComponent,
-    LoginComponent,
     MainComponent,
     NotificationComponent
   ],
@@ -51,6 +49,6 @@ import { NotificationComponent } from './notification/notification.component';
   ],
   providers: [AfDatabaseService, ApiService, AfMessagingService, AfAuthService, ComponentService],
   bootstrap: [AppComponent],
-  entryComponents: [AddComponent, LoginComponent, NotificationComponent]
+  entryComponents: [AddComponent, NotificationComponent]
 })
 export class AppModule { }

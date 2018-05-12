@@ -31,7 +31,6 @@ export class AfMessagingService {
 			.then((currentToken) => {
 				if (currentToken) {
 					this.token = currentToken
-					this.setupSubscription(currentToken)
 				} else {
 					console.log('No Instance ID token available. Request permission to generate one.');
 				}
@@ -49,10 +48,12 @@ export class AfMessagingService {
 		});
 	}
 
-	setupSubscription(token, topic?) {
+	setupSubscription(topic) {
 		let url = 'https://iid.googleapis.com/iid/v1/' +
-			token  +
-			'/rel/topics/dev-daily-updates'
+			this.token  +
+			'/rel/topics/' +
+			topic
+
 		this.http.post(url, '', httpOptions).subscribe(res => console.log(res))
 	}
 

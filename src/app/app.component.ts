@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { AddComponent } from './add/add.component';
-import { LoginComponent } from './login/login.component';
 import { NotificationComponent } from './notification/notification.component';
 
 import { ApiService } from './services/api.service';
@@ -21,9 +20,12 @@ export class AppComponent {
 	uid
 	availableCoins
 	user
+	selectedCoins
 	signedIn = true
 	showContent = false
 	loading = true
+
+	private userCoinsSubscription
 
 	constructor(
 		private componentService: ComponentService,
@@ -35,9 +37,9 @@ export class AppComponent {
 	{
 		this.afMsgService.setupMessaging();
 		this.afMsgService.setupNotification()
-		this.afAuthService.getAuthState$.subscribe(res => this.handleAuthState(res))
 		this.afDbService.getAvailableCoins().subscribe(res => this.availableCoins = res)
 		this.componentService.getLoadingStatus$.subscribe(status => this.loading = status)
+		this.afAuthService.getAuthState().subscribe(res => this.handleAuthState(res))
 	}
 
 	onAdd() {
@@ -45,7 +47,8 @@ export class AppComponent {
 			this.dialog.open(AddComponent, {
 				width: '340px',
 				data: {
-					userCoins: this.user !== null ? this.user.coins : null,
+					selectedCoins:
+						this.selectedCoins !== null ? this.selectedCoins : null,
 					availableCoins: this.availableCoins
 				}
 			}).afterClosed().subscribe(res => {
@@ -60,9 +63,11 @@ export class AppComponent {
 					}
 					this.afDbService.updateTopics(topic)
 					this.afDbService.updateUserTopic(topic, this.uid)
+					this.afMsgService.setupSubscription(topic)
 				} else {
 					userCoins = null
 					this.afDbService.updateUserTopic(null, this.uid)
+					this.afMsgService.setupSubscription('none')
 				}
 				this.afDbService.setUserCoins(userCoins, this.uid)
 			})
@@ -75,25 +80,32 @@ export class AppComponent {
 
 	onNotifications() {
 		this.dialog.open(NotificationComponent, { width: '340px' })
-		.afterClosed().subscribe(res => console.log(res))
+			.afterClosed().subscribe(res => console.log(res))
 	}
 
 	private handleAuthState(user) {
 		this.showContent = true
+
 		if (user !== null) {
 			this.signedIn = true
 			this.uid = user.uid
-			this.afDbService.getUser(user.uid).subscribe(res => {
-				this.user = res
-				this.componentService.sendUser(res)
-			})
+			this.user = user
+			this.handleUserCoins()
 		} else {
-			this.afDbService.getSample().subscribe(res => {
-				this.signedIn = false
-				this.user = res
-				this.componentService.sendUser(res)
-			})
+			this.signedIn = false
+			this.user = null
+			this.afDbService.getSample().then((snap) => {
+        snap.forEach((res) =>
+          this.componentService.sendCoins(res.val()))
+      })
 		}
+	}
+
+	private handleUserCoins() {
+		this.userCoinsSubscription = this.afDbService.getUserCoins(this.uid).subscribe(res => {
+			this.selectedCoins = res
+			this.componentService.sendCoins(res)
+		})
 	}
 
 }

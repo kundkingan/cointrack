@@ -7,19 +7,20 @@ import { Subject }    from 'rxjs/Subject'
 export class ComponentService {
 
 	private userSource = new Subject<any>()
-	private selectedCoinsSource = new Subject<any>()
+	private coinsSource = new Subject<any>()
 	private loadingStatusSource = new Subject<any>()
 
+
 	getUser$ = this.userSource.asObservable()
-	getSelectedCoins$ = this.selectedCoinsSource.asObservable()
+	getCoins$ = this.coinsSource.asObservable()
 	getLoadingStatus$ = this.loadingStatusSource.asObservable()
 
 	sendUser(user) {
 		this.userSource.next(user)
 	}
 
-	sendSelectedCoins(coins) {
-		this.selectedCoinsSource.next(coins)
+	sendCoins(coins) {
+		this.coinsSource.next(coins)
 	}
 
 	sendLoadingStatus(status) {

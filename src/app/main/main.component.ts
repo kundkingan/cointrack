@@ -15,7 +15,8 @@ import { AddComponent } from '../add/add.component'
 export class MainComponent {
 
 	coins = []
-	userCoins
+	newCoins = []
+	showText = false
 
   constructor(
   	private componentService: ComponentService,
@@ -23,35 +24,29 @@ export class MainComponent {
 		private dbService: AfDatabaseService,
 		public dialog: MatDialog)
 	{
-
-		this.componentService.getUser$.subscribe(user => {
-			if (user !== null ) {
-				this.userCoins = user['coins']
-				this.apiService.getTopCoins().subscribe(coins => this.handleCoins(coins['data']))
-			} else {
-				this.coins = []
-				this.componentService.sendLoadingStatus(false)
-			}
+		this.componentService.getCoins$.subscribe(coins => {
+			this.newCoins = coins
+			this.apiService.getTopCoins().subscribe(coinsStatus => this.handleCoinsStatus(coinsStatus['data']))
 		})
-
 	}
 
 	setPriceColor(percent) {
 		return percent >= 0 ? 'up' : 'down'
 	}
 
-	private handleCoins(coins) {
+	private handleCoinsStatus(coinsStatus) {
 		this.coins = []
 		this.componentService.sendLoadingStatus(false)
-		if (this.userCoins) {
-			this.userCoins.forEach(t => {
-				Object.keys(coins).forEach(coin => {
-					if (coins[coin]['symbol'] === t) {
-						this.coins.push(coins[coin])
+		if (this.newCoins) {
+			this.newCoins.forEach(t => {
+				Object.keys(coinsStatus).forEach(coin => {
+					if (coinsStatus[coin]['symbol'] === t) {
+						this.coins.push(coinsStatus[coin])
 					}
 				})
 			})
 		}
+		this.showText = this.coins.length > 0 ? false : true
 	}
 
 }
