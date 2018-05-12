@@ -91,6 +91,9 @@ export class AppComponent {
 			this.uid = user.uid
 			this.user = user
 			this.handleUserCoins()
+			this.afDbService.getUserSubscription(this.uid).then(snap =>
+				this.afMsgService.setupSubscription(snap.val())
+			)
 		} else {
 			this.signedIn = false
 			this.user = null

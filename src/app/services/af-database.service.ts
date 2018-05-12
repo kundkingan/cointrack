@@ -25,6 +25,10 @@ export class AfDatabaseService {
     return this.db.object(`user/${uid}/coins`).valueChanges()
   }
 
+  getUserSubscription(uid) {
+    return this.db.database.ref(`user/${uid}/subscriptions`).once('value')
+  }
+
   getAvailableCoins() {
     return this.db.object('availableCoins').valueChanges()
   }
