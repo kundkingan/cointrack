@@ -1,12 +1,12 @@
 <h2 mat-dialog-title>Select coins to track</h2>
 <mat-dialog-content>
-	<div class="example-container" *ngIf="set">
+	<div class="container" *ngIf="set">
 
-		<div class="example-header">
+<!-- 		<div class="header">
 			<mat-form-field>
 				<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
 			</mat-form-field>
-		</div>
+		</div> -->
 
 		<mat-table #table [dataSource]="dataSource">
 

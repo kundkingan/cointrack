@@ -49,17 +49,21 @@ export class AppComponent {
 					availableCoins: this.availableCoins
 				}
 			}).afterClosed().subscribe(res => {
-				let obj = {}
+				let userCoins = {}
+				let topic = res.map(res => res.name)
+				.sort()
+				.join('-')
 
 				if (res !== null) {
 					for(let i = 0; i < res.length; i++) {
-						obj[i] = res[i].name
+						userCoins[i] = res[i].name
 					}
 				} else {
-					obj = null
+					userCoins = null
 				}
 
-				this.afDbService.setUserCoins(obj, this.uid)
+				this.afDbService.updateTopics(topic)
+				this.afDbService.setUserCoins(userCoins, this.uid)
 			})
 		}
 	}
@@ -73,7 +77,7 @@ export class AppComponent {
 		.afterClosed().subscribe(res => console.log(res))
 	}
 
-	handleAuthState(user) {
+	private handleAuthState(user) {
 		this.showContent = true
 		if (user !== null) {
 			this.signedIn = true

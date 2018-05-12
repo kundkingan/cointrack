@@ -29,4 +29,16 @@ export class AfDatabaseService {
     this.db.object(`user/${uid}/coins`).set(coins)
   }
 
+  updateTopics(newTopic) {
+    this.db.database.ref('topics').orderByKey().once('value')
+      .then((snap) => {
+        let topics = []
+        snap.forEach((topic) => topics.push(topic.val()))
+
+        if (topics.find((topic) => topic === topic ? true : false)) {
+          this.db.object('topics').update({[topics.length] : newTopic})
+        }
+      })
+  }
+
 }
