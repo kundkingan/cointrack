@@ -43,13 +43,15 @@ export class MainComponent {
 	private handleCoins(coins) {
 		this.coins = []
 		this.componentService.sendLoadingStatus(false)
-		this.userCoins.forEach(t => {
-			Object.keys(coins).forEach(coin => {
-				if (coins[coin]['symbol'] === t) {
-					this.coins.push(coins[coin])
-				}
+		if (this.userCoins) {
+			this.userCoins.forEach(t => {
+				Object.keys(coins).forEach(coin => {
+					if (coins[coin]['symbol'] === t) {
+						this.coins.push(coins[coin])
+					}
+				})
 			})
-		})
+		}
 	}
 
 }

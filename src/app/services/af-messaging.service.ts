@@ -14,7 +14,7 @@ const httpOptions = {
 @Injectable()
 export class AfMessagingService {
 
-	messaging: any
+	messaging
 	token
 
 	constructor(private http: HttpClient) { }

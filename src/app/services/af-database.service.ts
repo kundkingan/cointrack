@@ -30,15 +30,21 @@ export class AfDatabaseService {
   }
 
   updateTopics(newTopic) {
-    this.db.database.ref('topics').orderByKey().once('value')
+    this.db.database.ref('topics').once('value')
       .then((snap) => {
         let topics = []
-        snap.forEach((topic) => topics.push(topic.val()))
+        snap.forEach((topic) => {
+          topics.push(topic.val())
+        })
 
-        if (topics.find((topic) => topic === topic ? true : false)) {
+        if (!topics.find((topic) => topic === newTopic ? true : false)) {
           this.db.object('topics').update({[topics.length] : newTopic})
         }
       })
+  }
+
+  updateUserTopic(topic, uid) {
+    this.db.object(`user/${uid}/subscriptions`).set(topic)
   }
 
 }

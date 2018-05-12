@@ -41,7 +41,7 @@ export class AppComponent {
 	}
 
 	onAdd() {
-		if (this.signedIn) {
+		if (this.signedIn && this.user !== undefined) {
 			this.dialog.open(AddComponent, {
 				width: '340px',
 				data: {
@@ -54,15 +54,16 @@ export class AppComponent {
 				.sort()
 				.join('-')
 
-				if (res !== null) {
+				if (res.length !== 0) {
 					for(let i = 0; i < res.length; i++) {
 						userCoins[i] = res[i].name
 					}
+					this.afDbService.updateTopics(topic)
+					this.afDbService.updateUserTopic(topic, this.uid)
 				} else {
 					userCoins = null
+					this.afDbService.updateUserTopic(null, this.uid)
 				}
-
-				this.afDbService.updateTopics(topic)
 				this.afDbService.setUserCoins(userCoins, this.uid)
 			})
 		}
