@@ -1,52 +1,77 @@
-import { firebaseConfig } from './../environments/firebase.config';
+import { firebaseConfig } from './../environments/firebase.config'
 
-import * as firebase from 'firebase';
-firebase.initializeApp(firebaseConfig);
+import * as firebase from 'firebase'
+import { NgModule } from '@angular/core'
+import { BrowserModule } from '@angular/platform-browser'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { HttpClientModule } from '@angular/common/http'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { RouterModule } from '@angular/router'
 
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools'
+import { EffectsModule } from '@ngrx/effects'
+import { StoreModule } from '@ngrx/store'
 
-import { MaterialModule } from './material.module';
-import { ServiceWorkerModule } from '@angular/service-worker';
+import { MaterialModule } from './material.module'
 
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule } from 'angularfire2/database';
-import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireModule } from 'angularfire2'
+import { AngularFireDatabaseModule } from 'angularfire2/database'
+import { AngularFireAuthModule } from 'angularfire2/auth'
 
-import { AfDatabaseService } from './services/af-database.service';
-import { AfMessagingService } from './services/af-messaging.service';
-import { AfAuthService } from './services/af-auth.service';
-import { ApiService } from './services/api.service';
-import { ComponentService } from './services/component.service';
+import { AfDatabaseService } from './services/af-database.service'
+import { AfMessagingService } from './services/af-messaging.service'
+import { AfAuthService } from './services/af-auth.service'
+import { ApiService } from './services/api.service'
+import { ComponentService } from './services/component.service'
 
-import { AppComponent } from './app.component';
-import { AddComponent } from './add/add.component';
-import { MainComponent } from './main/main.component';
-import { NotificationComponent } from './notification/notification.component';
+import { AppComponent } from './containers/app/app.component'
+import { AddComponent } from './componenets/add/add.component'
+import { MainComponent } from './containers/main/main.component'
+import { NotificationComponent } from './componenets/notification/notification.component'
+import { tutorialReducer } from './reducers/main.reducer'
+import { TutorialEffect } from './effects/main.effect'
+import { NotFoundPageComponent } from './containers/not-found-page/not-found-page.component'
+import { EntryComponent } from './containers/entry/entry.component'
+import { LogoutComponent } from './containers/logout/logout.component'
+import { AccountComponent } from './containers/account/account.component'
+import { routes } from './routes'
+import { UserGuard } from './user-guard'
+
+firebase.initializeApp(firebaseConfig)
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    AddComponent,
-    MainComponent,
-    NotificationComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    MaterialModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireDatabaseModule,
-    AngularFireAuthModule
-  ],
-  providers: [AfDatabaseService, ApiService, AfMessagingService, AfAuthService, ComponentService],
-  bootstrap: [AppComponent],
-  entryComponents: [AddComponent, NotificationComponent]
+	declarations: [
+		AppComponent,
+		AddComponent,
+		MainComponent,
+		NotificationComponent,
+		NotFoundPageComponent,
+		EntryComponent,
+		LogoutComponent,
+		AccountComponent
+	],
+	imports: [
+		BrowserModule,
+		BrowserAnimationsModule,
+		HttpClientModule,
+		MaterialModule,
+		FormsModule,
+		ReactiveFormsModule,
+		AngularFireModule.initializeApp(firebaseConfig),
+		AngularFireDatabaseModule,
+		AngularFireAuthModule,
+		RouterModule.forRoot(routes),
+		EffectsModule.forRoot([ TutorialEffect ]),
+		StoreModule.forRoot({
+			tutorial: tutorialReducer
+		}),
+		StoreDevtoolsModule.instrument({
+			maxAge: 5
+		})
+	],
+	providers: [ AfDatabaseService, ApiService, AfMessagingService, AfAuthService, ComponentService, UserGuard ],
+	bootstrap: [ AppComponent ],
+	entryComponents: [ AddComponent, NotificationComponent ]
 })
-export class AppModule { }
+export class AppModule {
+}

@@ -1,0 +1,61 @@
+main {
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.sign-in {
+  width: 350px;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 20px;
+
+  .header {
+    color: white;
+    padding-bottom: 18px;
+    width: 65%;
+    margin: 0 auto;
+  }
+
+  button.mat-raised-button:hover {
+    background-color: #e0e0e0;
+  }
+}
+
+.bottom {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  border-top: 1px solid #292626cc;
+  background: #282828;
+  color: rgba(250, 250, 250, 0.82);
+  font-size: 15px;
+
+  .b-actions {
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    text-align: center;
+    padding: 18px 0 9px 0;
+
+    & > * {
+      flex: 1;
+      & > * {
+        width: 125px;
+        margin: 0 auto;
+
+        &:hover {
+          cursor: pointer;
+          color: rgba(195, 195, 195, 0.82);
+        }
+      }
+    }
+  }
+}
+
+.loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
