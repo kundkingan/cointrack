@@ -1,5 +1,5 @@
 import { Tutorial } from '../models/tutorial.model'
-import * as TutorialActions from '../actions/main.action'
+import * as actions from '../actions/main.action'
 
 // Section 1
 const initialState: Tutorial = {
@@ -7,14 +7,13 @@ const initialState: Tutorial = {
 	url: 'http://google.com'
 }
 
-export function tutorialReducer(state: Tutorial[] = [ initialState ], action: TutorialActions.Actions) {
+export function reducer(state: Tutorial[] = [ initialState ], action: actions.Actions) {
 	switch (action.type) {
-		case TutorialActions.ADD_TUTORIAL:
+		case actions.ADD_TUTORIAL:
 			return [ ...state, action.payload ]
-		case TutorialActions.REMOVE_TUTORIAL:
+		case actions.REMOVE_TUTORIAL:
 			return [ ...state.filter((v, i) => i !== action.payload) ]
-		case TutorialActions.ADD_SUCCESS:
-			console.log('YAS')
+		case actions.ADD_SUCCESS:
 			return state
 		default:
 			return state

@@ -17,12 +17,12 @@ export const routes = [
 	{
 		path: 'main',
 		component: MainComponent,
-		canActivate: [UserGuard]
+		canActivate: [ UserGuard ]
 	},
 	{
 		path: 'account',
 		component: AccountComponent,
-		canActivate: [UserGuard]
+		canActivate: [ UserGuard ]
 	},
 	{
 		path: 'page-not-found',

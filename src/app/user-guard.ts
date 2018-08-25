@@ -14,7 +14,7 @@ export class UserGuard implements CanActivate {
 
 	canActivate(): boolean {
 		if (!this.afAuthService.authenticated) {
-			this.router.navigate(['/'])
+			this.router.navigate([ '/' ])
 			return false
 		} else
 			return true
