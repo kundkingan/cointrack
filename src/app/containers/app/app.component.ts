@@ -14,7 +14,6 @@ export class AppComponent {
 	// selectedCoins
 	// signedIn = true
 	// showContent = false
-	// loading = true
 	//
 	// private userCoinsSubscription
 
@@ -23,7 +22,7 @@ export class AppComponent {
 		// private apiService: ApiService,
 		// private afDbService: AfDatabaseService,
 		// private afMsgService: AfMessagingService,
-		private afAuthService: AfAuthService
+		// private afAuthService: AfAuthService
 		// public dialog: MatDialog
 	) {
 		// this.afMsgService.setupMessaging();

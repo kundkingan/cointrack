@@ -25,9 +25,9 @@ import { ApiService } from './services/api.service'
 import { ComponentService } from './services/component.service'
 
 import { AppComponent } from './containers/app/app.component'
-import { AddComponent } from './componenets/add/add.component'
+import { AddComponent } from './components/add/add.component'
 import { MainComponent } from './containers/main/main.component'
-import { NotificationComponent } from './componenets/notification/notification.component'
+import { NotificationComponent } from './components/notification/notification.component'
 import { TutorialEffect } from './effects/main.effect'
 import { NotFoundPageComponent } from './containers/not-found-page/not-found-page.component'
 import { EntryComponent } from './containers/entry/entry.component'
@@ -35,7 +35,8 @@ import { LogoutComponent } from './containers/logout/logout.component'
 import { AccountComponent } from './containers/account/account.component'
 import { routes } from './routes'
 import { UserGuard } from './user-guard'
-import { reducers } from './reducers'
+import { reducers } from './reducers';
+import { EntryLoginComponent } from './components/entry-login/entry-login.component'
 
 firebase.initializeApp(firebaseConfig)
 
@@ -48,7 +49,8 @@ firebase.initializeApp(firebaseConfig)
 		NotFoundPageComponent,
 		EntryComponent,
 		LogoutComponent,
-		AccountComponent
+		AccountComponent,
+		EntryLoginComponent
 	],
 	imports: [
 		BrowserModule,
